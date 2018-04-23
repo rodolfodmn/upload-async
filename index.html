@@ -1,0 +1,34 @@
+<form id="formulario" method="post" enctype="multipart/form-data">
+    <label for="arquivo">
+        <img class="label-img rounded-circle" id="img-label"
+             src="<?=\yii\helpers\Url::base()?>/images/ic_placeholder.png">
+    </label>
+    <input name="arquivo" type="file" id="arquivo"/>
+</form>
+<script>
+    $(document).ready(function () {
+        $('#arquivo').change(function () {
+            var formData = new FormData();
+            formData.append('image', event.target.files[0]);
+            console.log(formData);
+            console.log($.ajax({
+                url: 'http://localhost/giftwish-web/api/web/v1/user/upload-img',
+                type: 'POST',
+                data: formData,
+                success: function (data) {
+                    console.log($('#img-label').attr('src', 'http://localhost/giftwish-web/api/web/uploads/' + data));
+                    $('#img-label').src = "http://localhost/giftwish-web/api/web/uploads/" + data;
+                }, done: function (data) {
+                    alert(data)
+                },
+                error: function (exr, sender) {
+                    alert('Erro ao carregar pagina');
+                },
+                cache: false,
+                contentType: false,
+                processData: false,
+            }));
+        });
+    });
+
+</script>
